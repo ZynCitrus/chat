@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Tillåt läsning och skrivning för "messages"
+    match /messages/{messageId} {
+      allow read: if request.auth != null; // Endast inloggade användare kan läsa
+      allow create: if canCreateMessage(); // Använd canCreateMessage() för att validera skrivning
+
+      function canCreateMessage() {
+        let isSignedIn = request.auth != null; // Kontrollera inloggning
+        let isOwner = request.auth.uid == request.resource.data.uid; // Kontrollera ägande
+        let isNotBanned = exists(
+          /databases/$(database)/documents/banned/$(request.auth.uid)
+        ) == false; // Kontrollera att användaren inte är bannad
+        return isSignedIn && isOwner && isNotBanned;
+      }
+    }
+
+    // Blockera alla andra samlingar och dokument
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
