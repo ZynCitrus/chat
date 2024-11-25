@@ -16,18 +16,6 @@ export function ChatRoom() {
   const [messages, loading, error] = useCollectionData(q, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
 
-  
-  console.log("Querying messages from Firestore...");
-
-if (loading) {
-  console.log("Loading messages...");
-}
-if (error) {
-  console.error("Error fetching messages:", error);
-}
-if (messages) {
-  console.log("Fetched messages:", messages);
-}
 const sendMessage = async (e) => {
   e.preventDefault();
 
@@ -36,9 +24,7 @@ const sendMessage = async (e) => {
     return;
   }
 
-  const { uid, photoURL } = auth.currentUser;
-
-  console.log("Sending message:", formValue, uid, photoURL);
+  const { uid, photoURL, displayName } = auth.currentUser;
 
   try {
     await addDoc(messageRef, {
@@ -46,8 +32,8 @@ const sendMessage = async (e) => {
       createdAt: serverTimestamp(),
       uid,
       photoURL: photoURL || 'fallback-image-url.png',
+      displayName
     });
-    console.log("Message sent successfully");
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   } catch (error) {

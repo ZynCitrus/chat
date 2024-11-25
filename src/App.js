@@ -12,6 +12,7 @@ function App() {
   if (loading) {
     return <p>Loading...</p>;
   }
+  
 
   if (error) {
     console.error("Authentication error:", error);
@@ -21,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Värsta bästa chatten</h1>
+        <h1>Chatt - Firebase och React</h1>
         {user && <SignOutButton />}
       </header>
       <section>

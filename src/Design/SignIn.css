@@ -20,8 +20,8 @@
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
-  font-size: 0.75rem;
-  width: 50%;
+  font-size: 1rem;
+  width: 25%;
 }
 
 .signInBtn {
