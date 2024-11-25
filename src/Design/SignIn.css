@@ -1,18 +1,16 @@
-
 .sign-in {
-
   color: #282c34;
   background: white;
   max-width: 400px;
   margin: 0 auto;
 }
 
-.signInWrapper{
+.signInWrapper {
   display: flex;
   justify-content: center;
 }
 
-.signOutBtn{
+.signOutBtn {
   background-color: #222; /* Green */
   color: white;
   padding: 15px 32px;

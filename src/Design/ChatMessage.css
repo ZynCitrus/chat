@@ -1,5 +1,5 @@
-
-ul, li {
+ul,
+li {
   text-align: left;
   list-style: none;
 }
@@ -19,7 +19,6 @@ p {
   display: flex;
   align-items: center;
 }
-
 
 .sent {
   flex-direction: row-reverse;
@@ -47,7 +46,7 @@ img {
   padding: 10px;
 }
 
-.timestamp{
+.timestamp {
   color: white;
   padding: 10px;
 }

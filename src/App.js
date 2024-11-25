@@ -1,10 +1,10 @@
-import './App.css';
+import "./App.css";
 
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState } from "react-firebase-hooks/auth";
 
-import {auth } from './fbconfig'
-import { SignIn, SignOutButton } from './Components/SignIn';
-import {ChatRoom}  from './Components/ChatRoom.jsx';
+import { auth } from "./fbconfig";
+import { SignIn, SignOutButton } from "./Components/SignIn";
+import { ChatRoom } from "./Components/ChatRoom.jsx";
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
@@ -12,7 +12,6 @@ function App() {
   if (loading) {
     return <p>Loading...</p>;
   }
-  
 
   if (error) {
     console.error("Authentication error:", error);
@@ -25,13 +24,9 @@ function App() {
         <h1>Chatt - Firebase och React</h1>
         {user && <SignOutButton />}
       </header>
-      <section>
-        {user ? <ChatRoom /> : <SignIn />}
-      </section>
+      <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   );
 }
-
-
 
 export default App;
