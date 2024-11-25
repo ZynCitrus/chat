@@ -1,5 +1,5 @@
 import {auth } from '../fbconfig'
-
+import '../Design/ChatMessage.css'
 
 export function ChatMessage(props) {
   const { text, uid, photoURL, createdAt } = props.message;

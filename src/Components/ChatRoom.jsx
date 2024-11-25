@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import '../Design/ChatRoom.css'
 
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { getFirestore, collection, query, orderBy, limit, addDoc, serverTimestamp,  } from 'firebase/firestore';
@@ -58,7 +59,6 @@ const sendMessage = async (e) => {
 
   return (
     <>
-      return (
   <main>
     {messages && messages.length > 0 ? (
       messages
@@ -69,7 +69,6 @@ const sendMessage = async (e) => {
       <p>Inga meddelanden i chatten</p>
     )}
   </main>
-);
       <form onSubmit={sendMessage}>
         <input
           value={formValue}
