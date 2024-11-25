@@ -1,5 +1,5 @@
 body {
-  background-color: #222;
+  background-color: #282c34;
 }
 
 .App {
@@ -8,12 +8,8 @@ body {
   margin: 0 auto;
 }
 
-h1{
-  font-size: 1rem;
-}
-
 .App header {
-  background-color: #161e947a;
+  background-color: #181717;
   height: 10vh;
   min-height: 50px;
   color: white;
