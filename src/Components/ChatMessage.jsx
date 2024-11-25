@@ -12,10 +12,9 @@ export function ChatMessage(props) {
 
   return (
     <div className={`message ${messageClass}`}>
-      {/*       <img src={photoURL || 'https://via.placeholder.com/150'} alt="User Avatar" />
-       */}{" "}
-      <p className="nameHolder">{displayName}</p>
-      <p>{text}</p>
+      <img src={photoURL || 'https://via.placeholder.com/150'} alt="User Avatar" />
+{" "}
+      <p className="textDisplay">{text}</p>
       <span className="timestamp">{timestamp}</span>
     </div>
   );
