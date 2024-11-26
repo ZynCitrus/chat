@@ -1,7 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "../Design/ChatRoom.css";
 
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
   getFirestore,
   collection,
@@ -10,6 +9,7 @@ import {
   limit,
   addDoc,
   serverTimestamp,
+  getDocs
 } from "firebase/firestore";
 import { auth, app } from "../fbconfig";
 
@@ -17,16 +17,34 @@ import { ChatMessage } from "./ChatMessage";
 const firestore = getFirestore(app);
 
 export function ChatRoom() {
-  const dummy = useRef();
-  const messageRef = collection(firestore, "messages");
-  const q = query(messageRef, orderBy("createdAt", "desc"), limit(25));
-
-  const [messages, loading, error] = useCollectionData(q, { idField: "id" });
+  const dummy = useRef(null); 
+  const [messages, setMessages] = useState([]);
   const [formValue, setFormValue] = useState("");
+
+    const fetchMessages = async () => {
+    const messageRef = collection(firestore, "messages");
+    const q = query(messageRef, orderBy("createdAt", "desc"), limit(25));
+    try {
+      const querySnapshot = await getDocs(q);
+      const fetchedMessages = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMessages(fetchedMessages);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+
+  useEffect(() => {
+    const loadMessages = async () => {
+      await fetchMessages();
+    };
+    loadMessages();
+  }, []);
 
   const sendMessage = async (e) => {
     e.preventDefault();
-
     if (!formValue.trim()) {
       console.error("Cannot send an empty message");
       return;
@@ -35,7 +53,7 @@ export function ChatRoom() {
     const { uid, photoURL, displayName } = auth.currentUser;
 
     try {
-      await addDoc(messageRef, {
+      await addDoc(collection(firestore, "messages"), {
         text: formValue,
         createdAt: serverTimestamp(),
         uid,
@@ -43,7 +61,10 @@ export function ChatRoom() {
         displayName,
       });
       setFormValue("");
-      dummy.current.scrollIntoView({ behavior: "smooth" });
+      fetchMessages(); 
+      if (dummy.current) {
+        dummy.current.scrollIntoView({ behavior: "smooth" });
+      }
     } catch (error) {
       console.error("Error writing message to Firestore:", error);
     }
@@ -51,15 +72,17 @@ export function ChatRoom() {
 
   return (
     <>
-      <main>
+<main>
         {messages && messages.length > 0 ? (
           messages
             .slice()
             .reverse()
-            .map((msg) => <ChatMessage key={msg.id} message={msg} />)
+            .map((msg) =>       <ChatMessage key={msg.id} message={msg} fetchMessages={fetchMessages} />
+          )
         ) : (
           <p>Inga meddelanden i chatten</p>
         )}
+        <span ref={dummy}></span>
       </main>
       <form onSubmit={sendMessage}>
         <input
@@ -72,3 +95,4 @@ export function ChatRoom() {
     </>
   );
 }
+
